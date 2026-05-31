@@ -1,0 +1,32 @@
+features_name: ["GR", "CAL", "AC", "DEN", "CNL", "RT", "AT10" ]
+value_features_name: [ "DEPTH" ]
+labels_name: [ "层位", "解释结论" ]
+device: "cuda:3"
+
+features_tokenizer_map:
+  # 没写就是不做映射
+  AT10: RT
+  AT20: RT
+  AT30: RT
+  AT60: RT
+  AT90: RT
+  AT120: RT
+  RD: RT
+  RS: RT
+  ROX: RT
+
+tokenizer_pretrained_dict: {
+  "AC": "pretrain_model/vqvae/1700口井-删除重复-acc/AC/k64n256-s8-senet/l1_loss-0.05/acc_best_model.ckpt",
+  "CAL": "pretrain_model/vqvae/1700口井-删除重复-acc/CAL/k32n256-s8-senet/mse_loss-0.01/acc_best_model.ckpt",
+  "CNL": "pretrain_model/vqvae/1700口井-删除重复-acc/CNL/k64n256-s8-senet/mse_loss-0.01/acc_best_model.ckpt",
+  "DEN": "pretrain_model/vqvae/1700口井-删除重复-acc/DEN/k64n256-s8-senet/mse_loss-0.01/acc_best_model.ckpt",
+  "GR": "pretrain_model/vqvae/1700口井-删除重复-acc/GR/k64n256-s8-senet/mse_loss-0.01/acc_best_model.ckpt",
+  "RT": "pretrain_model/vqvae/1700口井-删除重复-acc/RT/k64n256-s8-senet/l1_loss-0.01/acc_best_model.ckpt",
+  "SP": "pretrain_model/vqvae/1700口井-删除重复-acc-没有范围约束-SP井内标准化/SP/k64n256-s8-senet/l1_loss-0.05/acc_best_model.ckpt"
+}
+
+train_filepath: "../data/h5/geological_layer/train/train.h5"
+train_desc_filepath: '../data/h5/geological_layer/train/param.json'
+
+val_filepath: "../data/h5/geological_layer/val/val.h5"
+val_desc_filepath: '../data/h5/geological_layer/val/param.json'

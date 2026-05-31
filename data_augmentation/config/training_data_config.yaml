@@ -1,0 +1,52 @@
+arch:
+  epochs: 100
+  device: "cuda:3"
+  seed: 42
+
+model:
+  author: "zhuzy"
+  type: "data_augmentation"
+  log_dir_path: 'log/data_h5/data_aug_log'
+  
+  params:
+    generic:
+      slice_length: 96
+      # features_name: ["DEPTH", "GR", "CAL", "SP", "AC", "DEN", "CNL","RT", "AT10"]
+      features_name: ["DEPTH", "GR", "CAL", "AC", "DEN", "CNL","RT", "AT10"]
+      # features_name: ["DEPTH"]
+      # features_name: ["DEPTH", "GR", "CAL", "AC", "DEN", "CNL"]
+      label_name: "层位" # 这里应选择是地质分层（层位）还是油气水划分（解释结论）任务，还有储层划分
+      classification_name: "地质分层" # 分为储层划分和“”
+      pretrained_filepath: None
+      draw_plt: "True"
+
+
+  scheduler:
+    decay: 0.98 # 一次的乘法衰减系数
+    lr_epoch_divide_frequency: 5 # 几轮衰减一次?
+  optimizer:
+    learning_rate: 0.001
+
+datasets:
+  train:
+    batch_size: 1024
+    num_workers: 6
+    slice_step: 96
+    well_use_num: 100
+    filepath: "../data/h5/train.h5"
+    # filepath: ../data/h5/train.h5
+    desc_filepath: '../data/h5/param.json'
+    drop_outlier: False # 抛弃无效点
+    add_filter: None # 是否进行数据增广以及数据增广形式，如果不进行增广为None
+    wavelet: "db4"
+    level: 2
+    data_format: 'dat'
+  val:
+    batch_size: 512
+    num_workers: 6
+    slice_step: 96
+    well_use_num: 18
+    filepath: "../data/h5/val.h5"
+    desc_filepath: '../data/h5/param.json'
+    drop_outlier: False
+    data_format: 'dat'

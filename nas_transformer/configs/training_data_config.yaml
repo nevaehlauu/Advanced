@@ -1,0 +1,52 @@
+arch:
+  epochs: 100
+  search_epochs: 50
+  device: "cuda:3"
+  seed: 40
+
+model:
+  author: "zhuzy"
+  type: "nas_transformer"
+  log_dir_path: 'darts_transformer/attention_mlp_search_log'
+  params:
+    generic:
+      slice_length: 256
+      # features_name: ["DEPTH", "GR", "CAL", "AC", "DEN", "CNL","RT", "AT10"]
+      features_name: ["GR", "CAL", "AC", "DEN", "CNL","RT", "AT10"]
+      label_name: "解释结论" # 这里应选择是地质分层（层位）还是油气水划分（解释结论）任务
+      classification_name: "储层划分" # 分为储层划分和“”
+      pretrained_filepath: None
+      draw_plt: "True"
+
+    # transformer:
+    #   hidden_size: 128
+    #   k: 32
+    #   beta: 0.25
+    #   scale_factor: 8
+    #   delete_codebook: False
+    #   encoder_type: "senet"
+
+
+  scheduler:
+    decay: 0.98 # 一次的乘法衰减系数
+    lr_epoch_divide_frequency: 1 # 几轮衰减一次?
+  optimizer:
+    learning_rate: 0.0025
+
+datasets:
+  train:
+    batch_size: 128
+    num_workers: 0
+    slice_step: 256
+    filepath: "../data/h5/total.h5"
+    desc_filepath: '../data/h5/param.json'
+    drop_outlier: False # 抛弃无效点
+    data_format: 'dat'
+  val:
+    batch_size: 128
+    num_workers: 0
+    slice_step: 64
+    filepath: "../data/h5/val.h5"
+    desc_filepath: '../data/h5/param.json'
+    drop_outlier: False
+    data_format: 'dat'
